@@ -3,4 +3,5 @@
   (lib (name "nixies-us")(type "Legacy")(uri "${KIPRJMOD}/Eagle-and-KiCAD-Nixie-Libs/nixies-us.lib")(options "")(descr ""))
   (lib (name "import1")(type "KiCad")(uri "${KIPRJMOD}/KiCAD/2023-04-24_04-23-15/2023-04-24_04-23-15.kicad_sym")(options "")(descr ""))
   (lib (name "import2")(type "KiCad")(uri "${KIPRJMOD}/KiCAD/2023-04-24_04-23-52/2023-04-24_04-23-52.kicad_sym")(options "")(descr ""))
+  (lib (name "ftdi")(type "KiCad")(uri "${KIPRJMOD}/FT231XS-R/FT231XS-R.kicad_sym")(options "")(descr ""))
 )
