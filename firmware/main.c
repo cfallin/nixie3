@@ -300,6 +300,7 @@ int main()
     init_display();
     init_usart();
     init_switches();
+    init_power();
     enable_timer_interrupt();
     sei();
 
