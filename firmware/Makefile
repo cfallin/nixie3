@@ -6,7 +6,7 @@ all: nixie.hex
 CC = avr-gcc
 LD = avr-ld
 OBJCOPY = avr-objcopy
-CFLAGS = -mmcu=atmega32 -O3
+CFLAGS = -mmcu=atmega328 -O3
 
 nixie.hex: nixie.out
 	$(OBJCOPY) -R .eeprom -O ihex nixie.out nixie.hex
