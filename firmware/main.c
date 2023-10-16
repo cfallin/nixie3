@@ -1,24 +1,37 @@
 /*
- * Nixie Clock v2.0
+ * Nixie Clock v3.0
  *
- * Copyright (c) 2022 Chris Fallin <chris@cfallin.org>
+ * Copyright (c) 2023 Chris Fallin <chris@cfallin.org>
  * Placed under the Apache-2.0 license.
  */
 
 /* 
- * Assume an ATmega8.
+ * Assume an ATmega328.
  *
  * IO connections (manufactured board version):
  *
- * PB0 is shift register clock (active high to shift).
- * PB1 is shift register data.
- * PB2 is shift register latch (active high to latch).
+ * PC5 is shift register clock (active high to shift).
+ * PC4 is shift register data.
+ * PD3 is shift register latch (active high to latch).
  *
  * Shift register output is nixie 2, 1; 4, 3; 6, 5. MSB first of BCD digits.
  *
- * PC0..PC5 are switches 0..5 (to ground; need internal pullups).
+ * PD0 is RXD from FT232 chip.
+ * PD1 is TXD to FT232 chip.
+ * PD2 is RTS' from FT232 chip.
  *
- * PD0..PD7 are expansion port.
+ * PB1 (OC1A) is out to high-voltage boost supply MOSFET driver (active low,
+ * inverting driver).
+ *
+ * ADC6 is in from high-voltage line voltage divider (1/101 of voltage, via
+ * 1M+10k divider).
+ *
+ * PC0 is J5 switch to ground.
+ * PC1 is J6 switch to ground.
+ * PC2 is J7 switch to ground.
+ * PC3 is J8 switch to ground.
+ *
+ * Clock is 10MHz crystal, no divider.
  */
 
 #include <avr/interrupt.h>

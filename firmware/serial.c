@@ -5,10 +5,10 @@
 #include "nixie.h"
 
 void init_usart() {
-    DDRD = 0;
-    PORTD = 0;
+    DDRD &= ~5; // RXD (PD0) and RTS' (PD2) in
+    DDRD |= 2;  // TXD out
 
-    UBRRL = 0x0a;  // baud divisor 10 --> 115200 baud (for 9600, use 129)
+    UBRRL = 0x05;  // baud divisor 5 --> 115200 baud
     UBRRH = 0x00;
     UCSRB = 0x90;  // RX interrupt enable, RX enable
     UCSRC = 0x86;  // 8N1

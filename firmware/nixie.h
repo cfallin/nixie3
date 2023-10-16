@@ -18,6 +18,10 @@ extern int switches;
 /* timer.c */
 void enable_timer_interrupt();
 
+/* power.c */
+void init_power();
+void update_power();
+
 /* main.c */
 void do_timer_int();
 void do_serial_time(int h, int m, int s);

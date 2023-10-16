@@ -2,9 +2,25 @@
 
 #include "nixie.h"
 
+#define PC_DATA (1 << 4)
+#define PC_CLK (1 << 5)
+#define PD_LATCH (1 << 3)
+
 void init_display() {
-    PORTB = 0;
-    DDRB = 7;
+    PORTC = PORTC & ~(PC_DATA | PC_CLK);
+    PORTD = PORTD & ~PD_LATCH;
+    DDRC = DDRC | PC_DATA | PC_CLK;
+    DDRD = DDRD | PD_LATCH;
+}
+
+static inline void set_data(int bit) {
+    PORTC = (PORTC & ~PC_DATA) | (bit ? PC_DATA : 0);
+}
+static inline void set_clk(int bit) {
+    PORTC = (PORTC & ~PC_CLK) | (bit ? PC_CLK : 0);
+}
+static inline void set_latch(int bit) {
+    PORTD = (PORTD & ~PD_LATCH) | (bit ? PD_LATCH : 0);
 }
 
 void output_digit(int d) {
@@ -18,20 +34,23 @@ void output_digit(int d) {
         d = 11 - d;
     }
     for (int i = 0; i < 4; i++) {
-        PORTB = (d & 8) ? 2 : 0;
+        int bit = (d & 8);
+        set_data(bit);
         delay();
-        PORTB |= 1;
+        set_clk(1);
         delay();
+        set_clk(0);
         d <<= 1;
     }
-    PORTB = 0;
+    delay();
+    set_data(0);
 }
 
 void latch_display() {
-    PORTB = 4;
+    set_latch(1);
     delay();
     delay();
-    PORTB = 0;
+    set_latch(0);
     delay();
     delay();
 }

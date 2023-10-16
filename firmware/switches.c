@@ -3,8 +3,8 @@
 #include "nixie.h"
 
 void init_switches() {
-    DDRC = 0;
-    PORTC = 0x3f;
+    DDRC &= ~0x0f;  // PC0..PC3 are inputs.
+    PORTC |= 0x0f;  // set pullups.
 }
 
 // Active-low (zero bit) for pressed button/flipped switch, as from
@@ -19,6 +19,6 @@ int switches = 0;
 void read_switches() {
     switch_debounce2 = switch_debounce1;
     switch_debounce1 = switch_debounce0;
-    switch_debounce0 = PINC;
+    switch_debounce0 = PINC & 0x0f;
     switches = ~(switch_debounce2 | switch_debounce1 | switch_debounce0);
 }
