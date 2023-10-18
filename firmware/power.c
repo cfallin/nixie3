@@ -20,8 +20,8 @@ void init_power() {
     // want to fight it.)
     PORTB |= 2;
 
-    ICR1 = 0x00ff; // TOP = 0x0fff
-    OCR1A = 238;  // 90% duty cycle
+    ICR1 = 0x0030; // TOP = 0x00ff
+    OCR1A = 0x0010;  // 90% duty cycle
     TCCR1A = 0x82; // non-inverting PWM mode; WGM11 bit of mode field
     TCCR1B = 0x19; // fast PWM mode (WGM1{3,2,1,0} = 1110), no prescaler
 
