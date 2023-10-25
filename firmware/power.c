@@ -11,7 +11,7 @@
  */
 
 #define PWM_TOP    0x0040
-#define PWM_THRESH 0x0028
+#define PWM_THRESH 0x0014
 
 void init_power() {
     // Turn on pull-up so the MOSFET is off by default until we configure
@@ -35,7 +35,7 @@ void init_power() {
     ADCSRA = 0xef;
 }
 
-#define VOLTAGE 145  // slightly miscalibrated ref --> this produces about 160V.
+#define VOLTAGE 160  // slightly miscalibrated ref --> this produces about 170V.
 #define TARGET (uint16_t)((uint32_t)1024 * VOLTAGE / 500)
 #define TARGET_HIST (TARGET + 2)
 
