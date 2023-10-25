@@ -24,14 +24,8 @@ static inline void set_latch(int bit) {
 }
 
 void output_digit(int d) {
-    if (d == 0) {
-        d = 1;
-    } else if (d == 1) {
-        d = 0;
-    } else if (d == 0xff) {
+    if (d == 0xff) {
         d = 15;
-    } else {
-        d = 11 - d;
     }
     for (int i = 0; i < 4; i++) {
         int bit = (d & 8);
@@ -40,6 +34,7 @@ void output_digit(int d) {
         set_clk(1);
         delay();
         set_clk(0);
+        delay();
         d <<= 1;
     }
     delay();
