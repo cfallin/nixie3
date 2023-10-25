@@ -11,7 +11,7 @@
  */
 
 #define PWM_TOP    0x0040
-#define PWM_THRESH 0x0034
+#define PWM_THRESH 0x0028
 
 void init_power() {
     // Turn on pull-up so the MOSFET is off by default until we configure
@@ -28,21 +28,28 @@ void init_power() {
     DDRB |= 2;
 
     // Turn on ADC.
-    ADMUX = 0x66;  // AVcc (5V) reference; ADC6 input.
+    ADMUX = 0x46;  // AVcc (5V) reference; ADC6 input.
     ADCSRB = 0x00; // trigger: free-running mode.
     // ADEN (enable); ADSC (start conv); ADATE (auto trigger); ADIE (ints);
     // prescale=128.
     ADCSRA = 0xef;
 }
 
-#define VOLTAGE 160
+#define VOLTAGE 145  // slightly miscalibrated ref --> this produces about 160V.
 #define TARGET (uint16_t)((uint32_t)1024 * VOLTAGE / 500)
+#define TARGET_HIST (TARGET + 2)
+
+char state = 1;
 
 ISR(ADC_vect) {
-    uint16_t value = (((uint16_t)ADCH) << 8) | ((uint16_t)ADCL);
-    if (value < TARGET) {
+    uint8_t lo = ADCL;
+    uint8_t hi = ADCH;
+    uint16_t value = (((uint16_t)hi) << 8) | ((uint16_t)lo);
+    if (state && value > TARGET_HIST) {
+        OCR1A = PWM_TOP;  // turn off
+        state = 0;
+    } else if (!state && value < TARGET) {
         OCR1A = PWM_THRESH;
-    } else {
-        OCR1A = PWM_TOP;
+        state = 1;
     }
 }
