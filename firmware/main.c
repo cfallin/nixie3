@@ -298,15 +298,11 @@ void update_display() {
 int main()
 {
     init_display();
-//    init_usart();
-//    init_switches();
+    init_usart();
+    init_switches();
     init_power();
-//    enable_timer_interrupt();
+    enable_timer_interrupt();
     sei();
-
-    while (1) {
-        display_digits(1, 2, 3, 4, 5, 6);
-    }
 
     int pos = 0;
     int state = 0;
