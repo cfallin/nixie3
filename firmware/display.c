@@ -7,6 +7,7 @@
 #define PD_LATCH (1 << 3)
 
 void init_display() {
+    TWCR = 0; // Disable SCL/SDA; otherwise, PC4 and PC5 are overridden.
     PORTC = PORTC & ~(PC_DATA | PC_CLK);
     PORTD = PORTD & ~PD_LATCH;
     DDRC = DDRC | PC_DATA | PC_CLK;
@@ -24,14 +25,8 @@ static inline void set_latch(int bit) {
 }
 
 void output_digit(int d) {
-    if (d == 0) {
-        d = 1;
-    } else if (d == 1) {
-        d = 0;
-    } else if (d == 0xff) {
+    if (d == 0xff) {
         d = 15;
-    } else {
-        d = 11 - d;
     }
     for (int i = 0; i < 4; i++) {
         int bit = (d & 8);
@@ -56,11 +51,11 @@ void latch_display() {
 }
 
 void display_digits(int h1, int h2, int m1, int m2, int s1, int s2) {
-    output_digit(h2);
-    output_digit(h1);
-    output_digit(m2);
-    output_digit(m1);
     output_digit(s2);
     output_digit(s1);
+    output_digit(m2);
+    output_digit(m1);
+    output_digit(h2);
+    output_digit(h1);
     latch_display();
 }
