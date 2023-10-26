@@ -35,6 +35,7 @@ void output_digit(int d) {
         set_clk(1);
         delay();
         set_clk(0);
+        delay();
         d <<= 1;
     }
     delay();
