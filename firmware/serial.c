@@ -8,10 +8,10 @@ void init_usart() {
     DDRD &= ~5; // RXD (PD0) and RTS' (PD2) in
     DDRD |= 2;  // TXD out
 
-    UBRRL = 0x05;  // baud divisor 5 --> 115200 baud
-    UBRRH = 0x00;
-    UCSRB = 0x90;  // RX interrupt enable, RX enable
-    UCSRC = 0x86;  // 8N1
+    UBRR0L = 0x05;  // baud divisor 5 --> 115200 baud
+    UBRR0H = 0x00;
+    UCSR0B = 0x90;  // RX interrupt enable, RX enable
+    UCSR0C = 0x86;  // 8N1
 }
 
 unsigned char serial_buf[6];
@@ -53,14 +53,14 @@ static void serial_receive(char c) {
     serial_buf[serial_buf_pos++] = c;
 }
 
-ISR(USART_RXC_vect) {
-    uint8_t status = UCSRA;
+ISR(USART_RX_vect) {
+    uint8_t status = UCSR0A;
     if (status & 0x10) {
         return;
     }
     if (!(status & 0x80)) {
         return;
     }
-    char c = UDR;
+    char c = UDR0;
     serial_receive(c);
 }
