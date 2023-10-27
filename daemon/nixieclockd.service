@@ -1,0 +1,12 @@
+[Unit]
+Description=Nixie clock serial port sync daemon
+After=network.service
+
+[Service]
+ExecStart=/usr/local/bin/nixieclockd
+User=root
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

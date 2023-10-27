@@ -8,10 +8,11 @@ void init_usart() {
     DDRD &= ~5; // RXD (PD0) and RTS' (PD2) in
     DDRD |= 2;  // TXD out
 
-    UBRR0L = 0x05;  // baud divisor 5 --> 115200 baud
+    UBRR0L = 129;  // baud divisor 129 --> 9600 baud
     UBRR0H = 0x00;
+    UCSR0A = 0x02;  // double-speed (divisor of 8)
     UCSR0B = 0x90;  // RX interrupt enable, RX enable
-    UCSR0C = 0x86;  // 8N1
+    UCSR0C = 0x06;  // 8N1
 }
 
 unsigned char serial_buf[6];
