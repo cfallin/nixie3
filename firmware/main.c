@@ -66,33 +66,38 @@ int display_mode = 0;
 int ui_state = 0;
 int ui_set_digit = 0;
 
+#define BUTTON1 1
+#define BUTTON2 2
+#define BUTTON3 4
+#define BUTTON4 8
+
 void do_ui() {
 
     switch (ui_state) {
     case UI_TIME:
         display_mode = DISPLAY_TIME;
-        if (switches & 8) {
+        if (switches & BUTTON1) {
             ui_state = UI_TO_SET;
         }
         break;
     case UI_TO_SET:
         display_mode = DISPLAY_TIME;
-        if (!(switches & 8)) {
+        if (!(switches & BUTTON1)) {
             ui_state = UI_SET;
             ui_set_digit = 0;
         }
         break;
     case UI_SET:
         display_mode = DISPLAY_SET;
-        if (switches & 8) {
+        if (switches & BUTTON1) {
             ui_state = UI_TO_SET_CAL;
-        } else if (switches & 4) {
+        } else if (switches & BUTTON2) {
             ui_set_digit++;
             if (ui_set_digit == 3) {
                 ui_set_digit = 0;
             }
             ui_state = UI_SET_NEXT;
-        } else if (switches & 2) {
+        } else if (switches & BUTTON3) {
             switch (ui_set_digit) {
                 case 0:
                     time_h++;
@@ -114,7 +119,7 @@ void do_ui() {
                     break;
             }
             ui_state = UI_SET_PLUS;
-        } else if (switches & 1) {
+        } else if (switches & BUTTON4) {
             switch (ui_set_digit) {
                 case 0:
                     if (time_h == 0) {
@@ -140,13 +145,13 @@ void do_ui() {
         break;
     case UI_SET_NEXT:
         display_mode = DISPLAY_SET;
-        if (!(switches & 4)) {
+        if (!(switches & BUTTON2)) {
             ui_state = UI_SET;
         }
         break;
     case UI_SET_PLUS:
         display_mode = DISPLAY_SET;
-        if (switches & 1) {
+        if (switches & BUTTON4) {
             switch (ui_set_digit) {
                 case 0:
                     time_h = 0;
@@ -158,13 +163,13 @@ void do_ui() {
                     time_s = 0;
                     break;
             }
-        } else if (!(switches & 2)) {
+        } else if (!(switches & BUTTON3)) {
             ui_state = UI_SET;
         }
         break;
     case UI_SET_MINUS:
         display_mode = DISPLAY_SET;
-        if (switches & 2) {
+        if (switches & BUTTON3) {
             switch (ui_set_digit) {
                 case 0:
                     time_h = 0;
@@ -176,28 +181,28 @@ void do_ui() {
                     time_s = 0;
                     break;
             }
-        } else if (!(switches & 1)) {
+        } else if (!(switches & BUTTON4)) {
             ui_state = UI_SET;
         }
         break;
     case UI_TO_SET_CAL:
         display_mode = DISPLAY_SET;
-        if (!(switches & 8)) {
+        if (!(switches & BUTTON1)) {
             ui_state = UI_SET_CAL;
             ui_set_digit = 0;
         }
         break;
     case UI_SET_CAL:
         display_mode = DISPLAY_CAL;
-        if (switches & 8) {
+        if (switches & BUTTON1) {
             ui_state = UI_TO_TIME;
-        } else if (switches & 4) {
+        } else if (switches & BUTTON2) {
             ui_set_digit++;
             if (ui_set_digit == 5) {
                 ui_set_digit = 0;
             }
             ui_state = UI_SET_CAL_NEXT;
-        } else if (switches & 2) {
+        } else if (switches & BUTTON3) {
             int amt = 1;
             for (int i = 0; i < (4 - ui_set_digit); i++) {
                 amt *= 10;
@@ -207,7 +212,7 @@ void do_ui() {
                 hz -= 100000;
             }
             ui_state = UI_SET_CAL_PLUS;
-        } else if (switches & 1) {
+        } else if (switches & BUTTON4) {
             int amt = 1;
             for (int i = 0; i < (4 - ui_set_digit); i++) {
                 amt *= 10;
@@ -221,25 +226,25 @@ void do_ui() {
         break;
     case UI_SET_CAL_NEXT:
         display_mode = DISPLAY_CAL;
-        if (!(switches & 4)) {
+        if (!(switches & BUTTON2)) {
             ui_state = UI_SET_CAL;
         }
         break;
     case UI_SET_CAL_PLUS:
         display_mode = DISPLAY_CAL;
-        if (!(switches & 2)) {
+        if (!(switches & BUTTON3)) {
             ui_state = UI_SET_CAL;
         }
         break;
     case UI_SET_CAL_MINUS:
         display_mode = DISPLAY_CAL;
-        if (!(switches & 1)) {
+        if (!(switches & BUTTON4)) {
             ui_state = UI_SET_CAL;
         }
         break;
     case UI_TO_TIME:
         display_mode = DISPLAY_CAL;
-        if (!(switches & 8)) {
+        if (!(switches & BUTTON1)) {
             ui_state = UI_TIME;
         }
         break;
