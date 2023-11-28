@@ -5,6 +5,7 @@
 void init_switches() {
     DDRC &= ~0x0f;  // PC0..PC3 are inputs.
     PORTC |= 0x0f;  // set pullups.
+    DIDR0 = 0;      // don't disable any digital inputs, even though the ADC is on.
 }
 
 // Active-low (zero bit) for pressed button/flipped switch, as from
